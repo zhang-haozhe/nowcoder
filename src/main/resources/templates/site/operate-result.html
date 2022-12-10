@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
@@ -7,12 +7,12 @@
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           rel="stylesheet">
     <link href="../../static/css/global.css" rel="stylesheet"/>
-    <title>牛客网-操作结果</title>
+    <title>Nowcoder-Result</title>
 </head>
 <body class="bg-white">
 <div class="nk-container">
     <!-- 头部 -->
-    <header class="bg-dark sticky-top">
+    <header class="bg-dark sticky-top" th:replace="index::header">
         <div class="container">
             <!-- 导航 -->
             <nav class="navbar navbar-expand-lg navbar-dark">
@@ -40,7 +40,8 @@
                             <a class="nav-link" href="login.html">登录</a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical dropdown">
-                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                               data-toggle="dropdown"
                                href="#" id="navbarDropdown" role="button">
                                 <img class="rounded-circle" src="http://images.nowcoder.com/head/1t.png"
                                      style="width:30px;"/>
@@ -68,11 +69,12 @@
     <div class="main">
         <div class="container mt-5">
             <div class="jumbotron">
-                <p class="lead">您的账号已经激活成功,可以正常使用了!</p>
+                <p class="lead" th:text="${message}">您的账号已经激活成功,可以正常使用了!</p>
                 <hr class="my-4">
                 <p>
-                    系统会在 <span class="text-danger" id="seconds">8</span> 秒后自动跳转,
-                    您也可以点此 <a class="text-primary" href="login.html" id="target">链接</a>, 手动跳转!
+                    You will be redirected in <span class="text-danger" id="seconds">8</span> seconds,
+                    Or, you may click on this <a class="text-primary" id="target" th:href="@{${target}}">link</a>
+                    manually.
                 </p>
             </div>
         </div>
