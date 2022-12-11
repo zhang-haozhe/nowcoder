@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -38,7 +41,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
 
     @Autowired
     private HostHolder hostHolder;
@@ -101,7 +103,30 @@ public class UserController {
             }
         } catch (IOException e) {
             logger.error("Reading profile picture failed: " + e.getMessage());
+        }
+    }
 
+    @RequestMapping(path = "/password", method = RequestMethod.POST)
+    public String changePassword(HttpServletRequest request, String oldPassword, String newPassword, String confirmPassword, Model model) {
+        User user = hostHolder.getUser();
+        Map<String, Object> map = userService.updatePassword(user, oldPassword, newPassword, confirmPassword);
+        if (map == null || map.isEmpty()) {
+            Cookie[] cookies = request.getCookies();
+            String ticket = "";
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("ticket")) {
+                        ticket = cookie.getName();
+                    }
+                }
+            }
+            userService.logout(ticket);
+            return "redirect:/login";
+        } else {
+            model.addAttribute("oldPasswordMessage", map.get("oldPasswordMessage"));
+            model.addAttribute("newPasswordMessage", map.get("newPasswordMessage"));
+            model.addAttribute("confirmPasswordMessage", map.get("confirmPasswordMessage"));
+            return "/site/settings";
         }
     }
 }

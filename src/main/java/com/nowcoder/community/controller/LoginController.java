@@ -118,7 +118,7 @@ public class LoginController implements CommunityConstant {
             cookie.setPath(contextPath);
             cookie.setMaxAge(expirationTime);
             response.addCookie(cookie);
-            System.out.println("redirect");
+            
             return "redirect:/index";
         } else {
             model.addAttribute("usernameMessage", map.get("usernameMessage"));

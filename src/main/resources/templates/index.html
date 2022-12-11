@@ -73,15 +73,15 @@
                 <!-- 筛选条件 -->
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">最新</a>
+                        <a class="nav-link active" href="#">Newest</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">最热</a>
+                        <a class="nav-link" href="#">Hottest</a>
                     </li>
                 </ul>
                 <button class="btn btn-primary btn-sm position-absolute rt-0" data-target="#publishModal"
                         data-toggle="modal"
-                        type="button">我要发布
+                        type="button">Post
                 </button>
             </div>
             <!-- 弹出框 -->
@@ -139,13 +139,13 @@
                     </a>
                     <div class="media-body">
                         <h6 class="mt-0 mb-3">
-                            <a href="#" th:utext="${map.post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</a>
-                            <span class="badge badge-secondary bg-primary" th:if="${map.post.type == 1}">置顶</span>
-                            <span class="badge badge-secondary bg-danger" th:if="${map.post.status == 1}">精华</span>
+                            <a href="#" th:utext="${map.post.title}"></a>
+                            <span class="badge badge-secondary bg-primary" th:if="${map.post.type == 1}"></span>
+                            <span class="badge badge-secondary bg-danger" th:if="${map.post.status == 1}"></span>
                         </h6>
                         <div class="text-muted font-size-12">
-                            <u class="mr-3" th:utext="${map.user.username}">寒江雪</u> 发布于 <b
-                                th:text="${#dates.format(map.post.createTime, 'yyyy-MM-dd HH:mm:ss')}">2019-04-15
+                            <u class="mr-3" th:utext="${map.user.username}"></u> <b
+                                th:text="${#dates.format(map.post.createTime, 'yyyy-MM-dd HH:mm:ss')}">
                             15:32:18</b>
                             <ul class="d-inline float-right">
                                 <li class="d-inline ml-2">赞 11</li>
