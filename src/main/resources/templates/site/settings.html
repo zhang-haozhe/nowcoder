@@ -1,19 +1,19 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link href="https://static.nowcoder.com/images/logo_87_87.png" rel="icon"/>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           rel="stylesheet">
-    <link href="../../static/css/global.css" rel="stylesheet"/>
-    <link href="../../static/css/login.css" rel="stylesheet"/>
-    <title>牛客网-账号设置</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <title>Nowcoder-Account Settings</title>
 </head>
 <body>
 <div class="nk-container">
     <!-- 头部 -->
-    <header class="bg-dark sticky-top">
+    <header class="bg-dark sticky-top" th:replace="index::header">
         <div class="container">
             <!-- 导航 -->
             <nav class="navbar navbar-expand-lg navbar-dark">
@@ -41,14 +41,15 @@
                             <a class="nav-link" href="login.html">登录</a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical dropdown">
-                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                               data-toggle="dropdown"
                                href="#" id="navbarDropdown" role="button">
                                 <img class="rounded-circle" src="http://images.nowcoder.com/head/1t.png"
                                      style="width:30px;"/>
                             </a>
                             <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                                 <a class="dropdown-item text-center" href="profile.html">个人主页</a>
-                                <a class="dropdown-item text-center" href="setting.html">账号设置</a>
+                                <a class="dropdown-item text-center" href="settings.html">账号设置</a>
                                 <a class="dropdown-item text-center" href="login.html">退出登录</a>
                                 <div class="dropdown-divider"></div>
                                 <span class="dropdown-item text-center text-secondary">nowcoder</span>
@@ -69,21 +70,28 @@
     <div class="main">
         <div class="container p-5 mt-3 mb-3">
             <!-- 上传头像 -->
-            <h6 class="text-left text-info border-bottom pb-2">上传头像</h6>
-            <form class="mt-5">
+            <h6 class="text-left text-info border-bottom pb-2">Upload profile picture</h6>
+            <form class="mt-5" enc enctype="multipart/form-data" method="post" th:action="@{/user/upload}">
                 <div class="form-group row mt-4">
-                    <label class="col-sm-2 col-form-label text-right">选择头像:</label>
+                    <label class="col-sm-2 col-form-label text-right">Choose profile picture:</label>
                     <div class="col-sm-10">
                         <div class="custom-file">
-                            <input class="custom-file-input" id="head-image" lang="es" required="" type="file">
-                            <label class="custom-file-label" data-browse="文件" for="head-image">选择一张图片</label>
+                            <input id="head-image" lang="es"
+                                   name="headerImage" required=""
+                                   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
+                                   type="file">
+                            <label class="custom-file-label" data-browse="文件" for="head-image">Choose an image
+                                file</label>
+                            <div class="invalid-feedback" th:text="${error}">
+                                This username does not exist!
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row mt-4">
                     <div class="col-sm-2"></div>
                     <div class="col-sm-10 text-center">
-                        <button class="btn btn-info text-white form-control" type="submit">立即上传</button>
+                        <button class="btn btn-info text-white form-control" type="submit">Upload</button>
                     </div>
                 </div>
             </form>
@@ -201,7 +209,7 @@
 <script crossorigin="anonymous" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <script crossorigin="anonymous"
         src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
-<script src="../../static/js/global.js"></script>
+<script th:src="@{/js/global.js}"></script>
 <script>
     $(function () {
         bsCustomFileInput.init();
