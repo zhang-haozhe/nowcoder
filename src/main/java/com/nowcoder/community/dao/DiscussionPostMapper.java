@@ -18,4 +18,10 @@ public interface DiscussionPostMapper {
     // @Param annotation is used to give param a name
     // if only one is given and used in tag <if>, then a name must be given.
     int selectDiscussionPostRows(@Param("userId") int userId);
+
+    int insertDiscussionPost(DiscussionPost discussionPost);
+
+    DiscussionPost selectDiscussionPostById(int id);
+
+    int updateCommentCount(int id, int commentCount);
 }

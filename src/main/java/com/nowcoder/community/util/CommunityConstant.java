@@ -26,4 +26,14 @@ public interface CommunityConstant {
      * Expiration time for login credential if remembered
      */
     int REMEMBERED_EXPIRATION_SECONDS = 3600 * 12 * 100;
+
+    /**
+     * Entity type: post
+     */
+    int ENTITY_TYPE_POST = 1;
+
+    /**
+     * Entity type: comment
+     */
+    int ENTITY_TYPE_COMMENT = 2;
 }
