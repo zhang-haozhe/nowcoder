@@ -140,6 +140,8 @@
                             <strong class="mr-auto" th:utext="${map.fromUser.username}">username</strong>
                             <small th:text="${#dates.format(map.message.createTime, 'MM-dd-yyyy HH:mm:ss')}">time</small>
                             <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
+                                <input id="messageId" th:value="${map.message.id}" type="hidden"/>
+                                <input id="conversationId" th:value="${map.message.conversationId}" type="hidden"/>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

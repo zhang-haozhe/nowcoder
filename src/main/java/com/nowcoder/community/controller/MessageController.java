@@ -1,6 +1,7 @@
 package com.nowcoder.community.controller;
 
 
+import com.nowcoder.community.annotation.LoginRequired;
 import com.nowcoder.community.entity.Message;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
@@ -147,4 +148,12 @@ public class MessageController {
 
         return CommunityUtil.getJSONString(0);
     }
+
+    @RequestMapping(path = "/message/delete", method = RequestMethod.POST)
+    @LoginRequired
+    public String deleteMessage(int id, String conversationId) {
+        messageService.deleteMessage(id);
+        return "redirect:/message/" + conversationId;
+    }
+
 }

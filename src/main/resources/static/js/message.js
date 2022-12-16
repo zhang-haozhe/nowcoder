@@ -32,6 +32,11 @@ function send_letter() {
 }
 
 function delete_msg() {
-    // TODO 删除数据
+    const messageId = $(this).find("#messageId").val();
+    const conversationId = $(this).find("#conversationId").val();
+
+    $.post(CONTEXT_PATH + "/message/delete",
+        {"id": messageId, "conversationId": conversationId}
+    )
     $(this).parents(".media").remove();
 }

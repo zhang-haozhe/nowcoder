@@ -150,7 +150,8 @@
                             <a th:href="@{|/message/${map.conversation.conversationId}|}"
                                th:utext="${map.conversation.content}">Message body</a>
                             <ul class="d-inline font-size-12 float-right">
-                                <li class="d-inline ml-2"><a class="text-primary" href="#"><i
+                                <li class="d-inline ml-2"><a class="text-primary"
+                                                             th:href="@{|/message/${map.conversation.conversationId}|}"><i
                                         th:text="${map.messageCount}">5</i> messages</a></li>
                             </ul>
                         </div>
