@@ -7,8 +7,8 @@
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/global.css}"/>
-    <link rel="stylesheet" th:href="@{/css/login.css}"/>
-    <title>Nowcoder-Account Settings</title>
+    <link rel="stylesheet" th:href="@{/css/letter.css}"/>
+    <title>Nowcoder-Conversation</title>
 </head>
 <body>
 <div class="nk-container">
@@ -68,78 +68,101 @@
 
     <!-- 内容 -->
     <div class="main">
-        <div class="container p-5 mt-3 mb-3">
-            <!-- 上传头像 -->
-            <h6 class="text-left text-info border-bottom pb-2">Upload profile picture</h6>
-            <form class="mt-5" enc enctype="multipart/form-data" method="post" th:action="@{/user/upload}">
-                <div class="form-group row mt-4">
-                    <label class="col-sm-2 col-form-label text-right">Choose profile picture:</label>
-                    <div class="col-sm-10">
-                        <div class="custom-file">
-                            <input id="head-image" lang="es"
-                                   name="headerImage" required=""
-                                   th:class="|custom-file-input ${error!=null?'is-invalid':''}|"
-                                   type="file">
-                            <label class="custom-file-label" data-browse="文件" for="head-image">Choose an image
-                                file</label>
-                            <div class="invalid-feedback" th:text="${error}">
-                                This username does not exist!
-                            </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <h6><b class="square"></b> Messages from <i class="text-success"
+                                                                th:utext="${target.username}">target</i></h6>
+                </div>
+                <div class="col-4 text-right">
+                    <button class="btn btn-secondary btn-sm" onclick="back();" type="button">Back
+                    </button>
+                    <button class="btn btn-primary btn-sm" data-target="#sendModal" data-toggle="modal" type="button">
+                        Send message
+                    </button>
+                </div>
+            </div>
+            <!-- 弹出框 -->
+            <div aria-hidden="true" aria-labelledby="exampleModalLabel" class="modal fade" id="sendModal" role="dialog"
+                 tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Send message</h5>
+                            <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="recipient-name">To:</label>
+                                    <input class="form-control" id="recipient-name" th:value="${target.username}"
+                                           type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-form-label" for="message-text">Content:</label>
+                                    <textarea class="form-control" id="message-text" rows="10"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
+                            <button class="btn btn-primary" id="sendBtn" type="button">Send</button>
                         </div>
                     </div>
                 </div>
-                <div class="form-group row mt-4">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-10 text-center">
-                        <button class="btn btn-info text-white form-control" type="submit">Upload</button>
-                    </div>
-                </div>
-            </form>
-            <!-- 修改密码 -->
-            <h6 class="text-left text-info border-bottom pb-2 mt-5">Update password</h6>
-            <form class="mt-5" method="post" th:action="@{/user/password}">
-                <div class="form-group row mt-4">
-                    <label class="col-sm-2 col-form-label text-right" for="old-password">Current password:</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" id="old-password" name="oldPassword" required
-                               th:class="|form-control ${oldPasswordMessage!=null?'is-invalid':''}|" type="password">
-                        <div class="invalid-feedback" th:text="${oldPasswordMessage}">
-                            密码长度不能小于8位!
+            </div>
+            <!-- 提示框 -->
+            <div aria-hidden="true" aria-labelledby="hintModalLabel" class="modal fade" id="hintModal" role="dialog"
+                 tabindex="-1">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="hintModalLabel">Notification</h5>
+                        </div>
+                        <div class="modal-body" id="hintBody">
+                            Message sent!
                         </div>
                     </div>
                 </div>
-                <div class="form-group row mt-4">
-                    <label class="col-sm-2 col-form-label text-right" for="new-password">New password:</label>
-                    <div class="col-sm-10">
-                        <input id="new-password" name="newPassword"
-                               required
-                               th:class="|form-control ${newPasswordMessage!=null?'is-invalid':''}|"
-                               type="password">
-                        <div class="invalid-feedback" th:text="${newPasswordMessage}">
-                            密码长度不能小于8位!
+            </div>
+
+            <!-- 私信列表 -->
+            <ul class="list-unstyled mt-4">
+                <li class="media pb-3 pt-3 mb-2" th:each="map:${messages}">
+                    <a href="profile.html">
+                        <img alt="profile" class="mr-4 rounded-circle user-header"
+                             th:src="${map.fromUser.headerUrl}">
+                    </a>
+                    <div aria-atomic="true" aria-live="assertive" class="toast show d-lg-block" role="alert">
+                        <div class="toast-header">
+                            <strong class="mr-auto" th:utext="${map.fromUser.username}">username</strong>
+                            <small th:text="${#dates.format(map.message.createTime, 'MM-dd-yyyy HH:mm:ss')}">time</small>
+                            <button aria-label="Close" class="ml-2 mb-1 close" data-dismiss="toast" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="toast-body" th:utext="${map.message.content}">
+                            body
                         </div>
                     </div>
-                </div>
-                <div class="form-group row mt-4">
-                    <label class="col-sm-2 col-form-label text-right" for="confirm-password">Confirm new
-                        password:</label>
-                    <div class="col-sm-10">
-                        <input id="confirm-password"
-                               name="confirmPassword" required
-                               th:class="|form-control ${confirmPasswordMessage!=null?'is-invalid':''}|"
-                               type="password">
-                        <div class="invalid-feedback" th:text="${confirmPasswordMessage}">
-                            Passwords do not match.
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row mt-4">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-10 text-center">
-                        <button class="btn btn-info text-white form-control" type="submit">Save</button>
-                    </div>
-                </div>
-            </form>
+                </li>
+            </ul>
+            <!-- 分页 -->
+            <nav class="mt-5" th:replace="index::pagination">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">首页</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#">上一页</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+                    <li class="page-item"><a class="page-link" href="#">末页</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 
@@ -212,13 +235,12 @@
 <script crossorigin="anonymous"
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script crossorigin="anonymous" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script crossorigin="anonymous"
-        src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 <script th:src="@{/js/global.js}"></script>
+<script th:src="@{/js/message.js}"></script>
 <script>
-    $(function () {
-        bsCustomFileInput.init();
-    });
+    function back() {
+        location.href = CONTEXT_PATH + "/messages";
+    }
 </script>
 </body>
 </html>
