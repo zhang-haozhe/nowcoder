@@ -47,7 +47,7 @@
                                      th:src="${loginUser.headerUrl}"/>
                             </a>
                             <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                                <a class="dropdown-item text-center" href="site/profile.html">Profile</a>
+                                <a class="dropdown-item text-center" th:href="@{|/user/profile/${loginUser.id}|}">Profile</a>
                                 <a class="dropdown-item text-center" th:href="@{/user/settings}">Settings</a>
                                 <a class="dropdown-item text-center" th:href="@{/logout}">Logout</a>
                                 <div class="dropdown-divider"></div>
@@ -133,8 +133,8 @@
             <!-- 帖子列表 -->
             <ul class="list-unstyled">
                 <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${discussionPosts}">
-                    <a href="site/profile.html">
-                        <img alt="用户头像" class="mr-4 rounded-circle user-header"
+                    <a th:href="@{|/user/profile/${map.user.id}|}">
+                        <img alt="Profile" class="mr-4 rounded-circle user-header"
                              th:src="${map.user.headerUrl}">
                     </a>
                     <div class="media-body">
@@ -149,7 +149,7 @@
                                 th:text="${#dates.format(map.post.createTime, 'MM-dd-yyyy HH:mm:ss')}">
                             15:32:18</b>
                             <ul class="d-inline float-right">
-                                <li class="d-inline ml-2">赞 11</li>
+                                <li class="d-inline ml-2">Likes <span th:text="${map.likeCount}">1</span></li>
                                 <li class="d-inline ml-2">|</li>
                                 <li class="d-inline ml-2">Replies <span th:text="${map.post.commentCount}">7</span></li>
                             </ul>

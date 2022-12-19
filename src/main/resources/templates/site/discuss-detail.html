@@ -83,7 +83,10 @@
 						<div class="text-muted mt-3">
 							Posted at <b th:text="${#dates.format(post.createTime, 'MM-dd-yyyy HH:mm:ss')}">2019-04-15 15:32:18</b>
 							<ul class="d-inline float-right">
-								<li class="d-inline ml-2"><a href="#" class="text-primary">赞 11</a></li>
+								<li class="d-inline ml-2"><a href="javascript:;" th:onclick="|like(this,1,${post.id},${post.userId});|" class="text-primary">
+									<b th:text="${likeStatus==1?'Liked':'Like'}">Like</b> <i th:text="${likeCount}">11</i>
+								</a>
+								</li>
 								<li class="d-inline ml-2">|</li>
 								<li class="d-inline ml-2"><a href="#replyform" class="text-primary">Replies <i th:text="${post.commentCount}">7</i></a></li>
 							</ul>
@@ -126,7 +129,9 @@
 							<div class="mt-4 text-muted font-size-12">
 								<span>Posted at <b th:text="${#dates.format(cvo.comment.createTime,'MM-dd-yyyy HH:mm:ss')}">2019-04-15 15:32:18</b></span>
 								<ul class="d-inline float-right">
-									<li class="d-inline ml-2"><a href="#" class="text-primary">赞(1)</a></li>
+									<li class="d-inline ml-2"><a href="javascript:;" th:onclick="|like(this,2,${cvo.comment.id},${cvo.comment.userId});|" class="text-primary">
+										<b th:text="${cvo.likeStatus==1?'Liked':'Like'}">Like</b> (<i th:text="${cvo.likeCount}">11</i>)
+									</a></li>
 									<li class="d-inline ml-2">|</li>
 									<li class="d-inline ml-2"><a href="#" class="text-primary">Reply(<i th:text="${cvo.replyCount}">2</i>)</a></li>
 								</ul>
@@ -145,7 +150,9 @@
 									<div class="mt-3">
 										<span th:text="${#dates.format(rvo.reply.createTime, 'MM-dd-yyyy HH:mm:ss')}">2019-04-15 15:32:18</span>
 										<ul class="d-inline float-right">
-											<li class="d-inline ml-2"><a href="#" class="text-primary">赞(1)</a></li>
+											<li class="d-inline ml-2"><a href="javascript:;" th:onclick="|like(this,2,${rvo.reply.id},${rvo.reply.userId});|" class="text-primary">
+												<b th:text="${rvo.likeStatus==1?'Liked':'Like'}">Like</b> (<i th:text="${rvo.likeCount}">11</i>)
+											</li>
 											<li class="d-inline ml-2">|</li>
 											<li class="d-inline ml-2"><a th:href="|#reply-${rvoStat.count}|" data-toggle="collapse" class="text-primary">Reply</a></li>
 										</ul>
@@ -278,5 +285,6 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
 	<script th:src="@{/js/global.js}"></script>
+	<script th:src="@{/js/discussion.js}"></script>
 </body>
 </html>
