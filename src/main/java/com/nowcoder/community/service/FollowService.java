@@ -36,10 +36,6 @@ public class FollowService implements CommunityConstant {
                 return operations.exec();
             }
         });
-        System.out.println(System.currentTimeMillis());
-        String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
-        System.out.println(redisTemplate.opsForZSet().reverseRangeByScore(followeeKey, Double.NEGATIVE_INFINITY, System.currentTimeMillis()));
-        System.out.println(redisTemplate.opsForZSet().zCard(followeeKey));
     }
 
     public void unfollow(int userId, int entityType, int entityId) {
@@ -62,7 +58,6 @@ public class FollowService implements CommunityConstant {
     // querying the count of followed entities
     public long findFolloweeCount(int userId, int entityType) {
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
-        System.out.println(followeeKey);
         return redisTemplate.opsForZSet().zCard(followeeKey);
     }
 
