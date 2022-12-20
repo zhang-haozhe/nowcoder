@@ -75,7 +75,7 @@
 				</h6>
 				<!-- 作者 -->
 				<div class="media pb-3 border-bottom">
-					<a href="profile.html">
+					<a th:href="@{|/user/profile/${user.id}|}">
 						<img th:src="${user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="Profile" >
 					</a>
 					<div class="media-body">
@@ -103,17 +103,17 @@
 				<!-- 回帖数量 -->
 				<div class="row">
 					<div class="col-8">
-						<h6><b class="square"></b> <i th:text="${post.commentCount}">30</i> Reply</h6>
+						<h6><b class="square"></b> <i th:text="${post.commentCount}">30</i> Replies</h6>
 					</div>
 					<div class="col-4 text-right">
-						<a href="#replyform" class="btn btn-primary btn-sm">Post</a>
+						<a href="#replyform" class="btn btn-primary btn-sm">Reply</a>
 					</div>
 				</div>
 				<!-- 回帖列表 -->
 				<ul class="list-unstyled mt-4">
 					<!-- 第1条回帖 -->
 					<li class="media pb-3 pt-3 mb-3 border-bottom" th:each="cvo:${comments}">
-						<a href="profile.html">
+						<a th:href="@{|/user/profile/${cvo.user.id}|}">
 							<img th:src="${cvo.user.headerUrl}" class="align-self-start mr-4 rounded-circle user-header" alt="Profile" >
 						</a>
 						<div class="media-body">

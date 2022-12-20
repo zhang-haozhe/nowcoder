@@ -155,7 +155,7 @@ public class UserController implements CommunityConstant {
         // user
         model.addAttribute("user", user);
         // like count
-        int likeCount = likeService.finduserLikeCount(userId);
+        int likeCount = likeService.findUserLikeCount(userId);
         model.addAttribute("likeCount", likeCount);
 
         // following count

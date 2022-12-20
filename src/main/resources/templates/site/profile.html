@@ -75,10 +75,10 @@
                         <a class="nav-link active" th:href="@{|/user/profile/${user.id}|}">Basic Information</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="my-post.html">My Posts</a>
+                        <a class="nav-link" th:href="@{|/user/posts/${user.id}|}">My Posts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="my-reply.html">My Replies</a>
+                        <a class="nav-link" th:href="@{|/user/comments/${user.id}|}">My Comments</a>
                     </li>
                 </ul>
             </div>

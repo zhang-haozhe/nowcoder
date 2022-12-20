@@ -37,7 +37,7 @@ public class DiscussionPostService {
         //filtering sensitive words
         post.setTitle(sensitiveWordFilter.filter(post.getTitle()));
         post.setContent(sensitiveWordFilter.filter(post.getContent()));
-
+        
         return discussionPostMapper.insertDiscussionPost(post);
     }
 
