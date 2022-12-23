@@ -51,4 +51,20 @@ public class MessageService {
     public int deleteMessage(int id) {
         return messageMapper.deleteMessage(id);
     }
+
+    public Message findLatestNotification(int userId, String topic) {
+        return messageMapper.selectLatestNotification(userId, topic);
+    }
+
+    public int findNotificationCount(int userId, String topic) {
+        return messageMapper.selectNotificationCount(userId, topic);
+    }
+
+    public int findUnreadNotificationCount(int userId, String topic) {
+        return messageMapper.selectUnreadNotificationCount(userId, topic);
+    }
+
+    public List<Message> findNotifications(int userId, String topic, int offset, int limit) {
+        return messageMapper.selectNotifications(userId, topic, offset, limit);
+    }
 }

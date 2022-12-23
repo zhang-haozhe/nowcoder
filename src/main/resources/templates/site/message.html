@@ -74,17 +74,19 @@
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
                         <a class="nav-link position-relative active" th:href="@{/messages}">Private Messages<span
-                                class="badge badge-danger" th:if="${unreadCount > 0}"
+                                class="badge badge-danger" th:if="${unreadMessageCount > 0}"
                                 th:text="${unreadMessageCount}">3</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link position-relative" href="notice.html">System Notifications<span
-                                class="badge badge-danger">27</span></a>
+                        <a class="nav-link position-relative" th:href="@{/notifications}">System Notifications<span
+                                class="badge badge-danger"
+                                th:if="${unreadNotificationCount > 0}"
+                                th:text="${unreadNotificationCount}">27</span></a>
                     </li>
                 </ul>
                 <button class="btn btn-primary btn-sm position-absolute rt-0" data-target="#sendModal"
                         data-toggle="modal"
-                        type="button">发私信
+                        type="button">Send private message
                 </button>
             </div>
             <!-- 弹出框 -->

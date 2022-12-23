@@ -30,4 +30,17 @@ public interface MessageMapper {
     int updateStatus(List<Integer> ids, int status);
 
     int deleteMessage(int id);
+
+    // query the newest notifications under specific topic
+    Message selectLatestNotification(int userId, String topic);
+
+    // query the number of notifications under specific topic
+    int selectNotificationCount(int userId, String topic);
+
+    // query the number of unread notifications
+    int selectUnreadNotificationCount(int userId, String topic);
+
+    // query the notifications for a specific topic
+    List<Message> selectNotifications(int userId, String topic, int offset, int limit);
+
 }

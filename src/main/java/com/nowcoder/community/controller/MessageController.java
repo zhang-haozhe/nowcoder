@@ -1,12 +1,15 @@
 package com.nowcoder.community.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.nowcoder.community.annotation.LoginRequired;
 import com.nowcoder.community.entity.Message;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.service.FollowService;
 import com.nowcoder.community.service.MessageService;
 import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.*;
 
 @Controller
-public class MessageController {
+public class MessageController implements CommunityConstant {
 
     @Autowired
     private MessageService messageService;
@@ -30,6 +34,10 @@ public class MessageController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FollowService followService;
+
 
     // list of messages
     @RequestMapping(path = "/messages", method = RequestMethod.GET)
@@ -62,6 +70,8 @@ public class MessageController {
         // query the number of unread messages
         int unreadMessageCount = messageService.findUnreadMessageCount(user.getId(), null);
         model.addAttribute("unreadMessageCount", unreadMessageCount);
+        int unreadNotificationCount = messageService.findUnreadNotificationCount(user.getId(), null);
+        model.addAttribute("unreadNotificationCount", unreadNotificationCount);
 
         return "/site/message";
     }
@@ -141,7 +151,6 @@ public class MessageController {
         } else {
             message.setConversationId(message.getToId() + "_" + message.getFromId());
         }
-
         message.setContent(content);
         message.setCreateTime(new Date());
         messageService.addMessage(message);
@@ -153,7 +162,130 @@ public class MessageController {
     @LoginRequired
     public String deleteMessage(int id, String conversationId) {
         messageService.deleteMessage(id);
+        if (conversationId.equals(TOPIC_COMMENT) || conversationId.equals(TOPIC_FOLLOW) || conversationId.equals(TOPIC_LIKE)) {
+            return "redirect:/notification/" + conversationId;
+        }
         return "redirect:/message/" + conversationId;
     }
+
+
+    @RequestMapping(path = "/notifications", method = RequestMethod.GET)
+    public String getNotifications(Model model) {
+        User user = hostHolder.getUser();
+
+        // comment
+        Message message = messageService.findLatestNotification(user.getId(), TOPIC_COMMENT);
+        if (message != null) {
+            Map<String, Object> commentMessageVO = new HashMap<>();
+            commentMessageVO.put("message", message);
+
+            String content = HtmlUtils.htmlUnescape(message.getContent());
+            Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
+
+            commentMessageVO.put("user", userService.findUserById((Integer) data.get("userId")));
+            commentMessageVO.put("entityType", data.get("entityType"));
+            commentMessageVO.put("entityId", data.get("entityId"));
+            commentMessageVO.put("postId", data.get("postId"));
+
+            int count = messageService.findNotificationCount(user.getId(), TOPIC_COMMENT);
+            commentMessageVO.put("count", count);
+
+            int unread = messageService.findUnreadNotificationCount(user.getId(), TOPIC_COMMENT);
+            commentMessageVO.put("unread", unread);
+            model.addAttribute("commentNotification", commentMessageVO);
+        }
+
+        // like
+        message = messageService.findLatestNotification(user.getId(), TOPIC_LIKE);
+        if (message != null) {
+            Map<String, Object> likeMessageVO = new HashMap<>();
+            likeMessageVO.put("message", message);
+
+            String content = HtmlUtils.htmlUnescape(message.getContent());
+            Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
+
+            likeMessageVO.put("user", userService.findUserById((Integer) data.get("userId")));
+            likeMessageVO.put("entityType", data.get("entityType"));
+            likeMessageVO.put("entityId", data.get("entityId"));
+            likeMessageVO.put("postId", data.get("postId"));
+
+            int count = messageService.findNotificationCount(user.getId(), TOPIC_LIKE);
+            likeMessageVO.put("count", count);
+
+            int unread = messageService.findUnreadNotificationCount(user.getId(), TOPIC_LIKE);
+            likeMessageVO.put("unread", unread);
+            model.addAttribute("likeNotification", likeMessageVO);
+        }
+
+        // follow
+        message = messageService.findLatestNotification(user.getId(), TOPIC_FOLLOW);
+        if (message != null) {
+            Map<String, Object> followMessageVO = new HashMap<>();
+            followMessageVO.put("message", message);
+
+            String content = HtmlUtils.htmlUnescape(message.getContent());
+            Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
+
+            followMessageVO.put("user", userService.findUserById((Integer) data.get("userId")));
+            followMessageVO.put("entityType", data.get("entityType"));
+            followMessageVO.put("entityId", data.get("entityId"));
+
+            int count = messageService.findNotificationCount(user.getId(), TOPIC_FOLLOW);
+            followMessageVO.put("count", count);
+
+            int unread = messageService.findUnreadNotificationCount(user.getId(), TOPIC_FOLLOW);
+            followMessageVO.put("unread", unread);
+            model.addAttribute("followNotification", followMessageVO);
+        }
+
+        // query the count of unread notifications
+        int unreadMessageCount = messageService.findUnreadMessageCount(user.getId(), null);
+        model.addAttribute("unreadMessageCount", unreadMessageCount);
+        int unreadNotificationCount = messageService.findUnreadNotificationCount(user.getId(), null);
+        model.addAttribute("unreadNotificationCount", unreadNotificationCount);
+
+        return "site/notice";
+    }
+
+    @RequestMapping(path = "/notification/{topic}", method = RequestMethod.GET)
+    public String getNotification(@PathVariable("topic") String topic, Page page, Model model) {
+        User user = hostHolder.getUser();
+
+        page.setLimit(5);
+        page.setPath("/notification/" + topic);
+        page.setRows(messageService.findNotificationCount(user.getId(), topic));
+
+        List<Message> notifications = messageService.findNotifications(user.getId(), topic, page.getOffset(), page.getLimit());
+        List<Map<String, Object>> notificationVOs = new ArrayList<>();
+        if (notifications != null) {
+            for (Message notification : notifications) {
+                Map<String, Object> map = new HashMap<>();
+                // notifications
+                map.put("notification", notification);
+                //content
+                String content = HtmlUtils.htmlUnescape(notification.getContent());
+                Map<String, Object> data = JSONObject.parseObject(content, HashMap.class);
+                map.put("user", userService.findUserById((Integer) data.get("userId")));
+                map.put("entityType", data.get("entityType"));
+                map.put("entityId", data.get("entityId"));
+                map.put("postId", data.get("postId"));
+                map.put("conversationId", data.get("conversationId"));
+                // notification auther
+                map.put("fromUser", userService.findUserById(notification.getFromId()));
+
+                notificationVOs.add(map);
+            }
+        }
+        model.addAttribute("notifications", notificationVOs);
+
+        // mark as read
+        List<Integer> ids = getMessageIds(notifications);
+        if (!ids.isEmpty()) {
+            messageService.readMessage(ids);
+        }
+
+        return "/site/notice-detail";
+    }
+
 
 }
