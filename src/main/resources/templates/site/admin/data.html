@@ -1,18 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
     <link href="https://static.nowcoder.com/images/logo_87_87.png" rel="icon"/>
     <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           rel="stylesheet">
-    <link href="../../../static/css/global.css" rel="stylesheet"/>
-    <title>牛客网-数据统计</title>
+    <link rel="stylesheet" th:href="@{/css/global.css}"/>
+    <title>Nowcoder-Summary</title>
 </head>
 <body>
 <div class="nk-container">
     <!-- 头部 -->
-    <header class="bg-dark sticky-top">
+    <header class="bg-dark sticky-top" th:replace="index::header">
         <div class="container">
             <!-- 导航 -->
             <nav class="navbar navbar-expand-lg navbar-dark">
@@ -40,7 +40,8 @@
                             <a class="nav-link" href="site/login.html">登录</a>
                         </li>
                         <li class="nav-item ml-3 btn-group-vertical dropdown">
-                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
+                               data-toggle="dropdown"
                                href="#" id="navbarDropdown" role="button">
                                 <img class="rounded-circle" src="http://images.nowcoder.com/head/1t.png"
                                      style="width:30px;"/>
@@ -68,31 +69,38 @@
     <div class="main">
         <!-- 网站UV -->
         <div class="container pl-5 pr-5 pt-3 pb-3 mt-3">
-            <h6 class="mt-3"><b class="square"></b> 网站 UV</h6>
-            <form class="form-inline mt-3">
-                <input class="form-control" required type="date"/>
-                <input class="form-control ml-3" required type="date"/>
-                <button class="btn btn-primary ml-3" type="button">开始统计</button>
+            <h6 class="mt-3"><b class="square"></b> Website UV</h6>
+            <form class="form-inline mt-3" method="post" th:action="@{/data/uv}">
+                <input class="form-control" name="start" required th:value="${#dates.format(uvStartDate, 'MM-dd-yyyy')}"
+                       type="date"/>
+                <input class="form-control ml-3" name="end" required
+                       th:value="${#dates.format(uvEndDate, 'MM-dd-yyyy')}"
+                       type="date"/>
+                <button class="btn btn-primary ml-3" type="submit">Start calculation</button>
             </form>
             <ul class="list-group mt-3 mb-3">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    统计结果
-                    <span class="badge badge-primary badge-danger font-size-14">0</span>
+                    Result
+                    <span class="badge badge-primary badge-danger font-size-14" th:text="${uvResult}">0</span>
                 </li>
             </ul>
         </div>
         <!-- 活跃用户 -->
         <div class="container pl-5 pr-5 pt-3 pb-3 mt-4">
-            <h6 class="mt-3"><b class="square"></b> 活跃用户</h6>
-            <form class="form-inline mt-3">
-                <input class="form-control" required type="date"/>
-                <input class="form-control ml-3" required type="date"/>
-                <button class="btn btn-primary ml-3" type="button">开始统计</button>
+            <h6 class="mt-3"><b class="square"></b> Daily Active Users</h6>
+            <form class="form-inline mt-3" method="post" th:action="@{/data/dau}">
+                <input class="form-control" name="start" required
+                       th:value="${#dates.format(dauStartDate, 'MM-dd-yyyy')}"
+                       type="date"/>
+                <input class="form-control ml-3" name="end" required
+                       th:value="${#dates.format(dauEndDate, 'MM-dd-yyyy')}"
+                       type="date"/>
+                <button class="btn btn-primary ml-3" type="submit">Start calculation</button>
             </form>
             <ul class="list-group mt-3 mb-3">
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    统计结果
-                    <span class="badge badge-primary badge-danger font-size-14">0</span>
+                    Result
+                    <span class="badge badge-primary badge-danger font-size-14" th:text="${dauResult}">0</span>
                 </li>
             </ul>
         </div>
@@ -167,6 +175,6 @@
 <script crossorigin="anonymous"
         src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script crossorigin="anonymous" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="../../../static/js/global.js"></script>
+<script th:src="@{/js/global.js}"></script>
 </body>
 </html>

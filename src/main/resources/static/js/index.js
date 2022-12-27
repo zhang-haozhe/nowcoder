@@ -5,6 +5,13 @@ $(function () {
 function publish() {
     $("#publishModal").modal("hide");
 
+    // before sending Ajax request, setting the CSRF token in the request header
+    // const token = $("meta[name='_csrf']").attr("content");
+    // const header = $("meta[name='_csrf_header']").attr("content");
+    // $(document).ajaxSend((e, xhr, options) => {
+    //     xhr.setRequestHeader(header, token);
+    // })
+
     // getting title and content
     const title = $("#recipient-name").val();
     const content = $("#message-text").val();

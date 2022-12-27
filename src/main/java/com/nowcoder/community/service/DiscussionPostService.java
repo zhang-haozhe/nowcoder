@@ -37,7 +37,7 @@ public class DiscussionPostService {
         //filtering sensitive words
         post.setTitle(sensitiveWordFilter.filter(post.getTitle()));
         post.setContent(sensitiveWordFilter.filter(post.getContent()));
-        
+
         return discussionPostMapper.insertDiscussionPost(post);
     }
 
@@ -47,5 +47,13 @@ public class DiscussionPostService {
 
     public int updateCommentCount(int id, int commentCount) {
         return discussionPostMapper.updateCommentCount(id, commentCount);
+    }
+
+    public int updateType(int id, int type) {
+        return discussionPostMapper.updateType(id, type);
+    }
+
+    public int updateStatus(int id, int status) {
+        return discussionPostMapper.updateStatus(id, status);
     }
 }

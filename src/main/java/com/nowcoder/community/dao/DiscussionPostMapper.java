@@ -11,8 +11,7 @@ import java.util.List;
  */
 @Mapper
 public interface DiscussionPostMapper {
-
-
+    
     List<DiscussionPost> selectDiscussionPosts(int userId, int offset, int limit);
 
     // @Param annotation is used to give param a name
@@ -24,4 +23,8 @@ public interface DiscussionPostMapper {
     DiscussionPost selectDiscussionPostById(int id);
 
     int updateCommentCount(int id, int commentCount);
+
+    int updateType(int id, int type);
+
+    int updateStatus(int id, int status);
 }
