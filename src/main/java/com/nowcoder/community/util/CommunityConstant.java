@@ -68,6 +68,11 @@ public interface CommunityConstant {
     String TOPIC_DELETE = "delete";
 
     /**
+     * topic: share
+     */
+    String TOPIC_SHARE = "share";
+
+    /**
      * User ID for System
      */
     int SYSTEM_USER_ID = 1;

@@ -24,8 +24,8 @@ public class MyPostService implements CommunityConstant {
         return discussionPostService.findDiscussPostRows(userId);
     }
 
-    public List<Map<String, Object>> findPosts(int userId, int offset, int limit) {
-        List<DiscussionPost> posts = discussionPostService.findDiscussionPosts(userId, offset, limit);
+    public List<Map<String, Object>> findPosts(int userId, int offset, int limit, int orderMode) {
+        List<DiscussionPost> posts = discussionPostService.findDiscussionPosts(userId, offset, limit, orderMode);
         if (posts == null) {
             return null;
         }

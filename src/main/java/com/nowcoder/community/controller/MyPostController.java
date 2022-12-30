@@ -43,7 +43,7 @@ public class MyPostController {
         page.setPath("/posts/" + userId);
         page.setRows(postCount);
 
-        List<Map<String, Object>> list = myPostService.findPosts(userId, page.getOffset(), page.getLimit());
+        List<Map<String, Object>> list = myPostService.findPosts(userId, page.getOffset(), page.getLimit(), 0);
 
         model.addAttribute("list", list);
         return "site/my-post";

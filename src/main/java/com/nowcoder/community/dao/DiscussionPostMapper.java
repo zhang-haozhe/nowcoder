@@ -11,8 +11,8 @@ import java.util.List;
  */
 @Mapper
 public interface DiscussionPostMapper {
-    
-    List<DiscussionPost> selectDiscussionPosts(int userId, int offset, int limit);
+
+    List<DiscussionPost> selectDiscussionPosts(int userId, int offset, int limit, int orderMode);
 
     // @Param annotation is used to give param a name
     // if only one is given and used in tag <if>, then a name must be given.
@@ -27,4 +27,6 @@ public interface DiscussionPostMapper {
     int updateType(int id, int type);
 
     int updateStatus(int id, int status);
+
+    int updateScore(int id, double score);
 }

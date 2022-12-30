@@ -79,10 +79,11 @@
                 <!-- 筛选条件 -->
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Newest</a>
+                        <a th:class="|nav-link ${orderMode==0?'active':''}|" th:href="@{/index(orderMode=0)}">Newest</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Hottest</a>
+                        <a th:class="|nav-link ${orderMode==1?'active':''}|"
+                           th:href="@{/index(orderMode=1)}">Hottest</a>
                     </li>
                 </ul>
                 <button class="btn btn-primary btn-sm position-absolute rt-0" data-target="#publishModal"

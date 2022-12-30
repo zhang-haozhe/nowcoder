@@ -12,6 +12,7 @@ public class RedisKeyUtil implements CommunityConstant {
     private static final String PREFIX_USER = "user";
     private static final String PREFIX_UV = "uv";
     private static final String PREFIX_DAU = "dau";
+    private static final String PREFIX_POST = "poast";
 
 
     // entity likes
@@ -71,5 +72,10 @@ public class RedisKeyUtil implements CommunityConstant {
     // AU of range
     public static String getDAUKey(String startDate, String endDate) {
         return PREFIX_DAU + SPLIT + startDate + SPLIT + endDate;
+    }
+
+    // post score
+    public static String getPostScoreKey() {
+        return PREFIX_POST + SPLIT + "score";
     }
 }
