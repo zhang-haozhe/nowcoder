@@ -25,6 +25,7 @@ import java.util.*;
 @RequestMapping("/discussion")
 public class DiscussionPostController implements CommunityConstant {
 
+
     @Autowired
     private DiscussionPostService discussionPostService;
 
