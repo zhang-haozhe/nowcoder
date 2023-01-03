@@ -1,6 +1,11 @@
 # README
 
+## Intro
+
 A developer community named Nowcoder. Built using Spring Boot, Spring MVC, Thymeleaf, MyBatis, Redis and Kafka.
+
+![img.png](img.png)
+![img_1.png](img_1.png)
 
 ## Running the project
 
