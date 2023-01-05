@@ -33,6 +33,9 @@ build/
 ### VS Code ###
 .vscode/
 /src/main/resources/secrets.properties
+/src/main/resources/application-dev.properties
+/src/main/resources/application-prod.properties
+/src/main/resources/logback-spring-dev.xml
 /error/
 /info/
 /warn/
