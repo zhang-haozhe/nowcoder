@@ -6,6 +6,7 @@ A developer community named Nowcoder. Built using Spring Boot, Spring MVC, Thyme
 
 ![img.png](img.png)
 ![img_1.png](img_1.png)
+![img_2.png](img_2.png)
 
 ## Switching between dev and prod
 
