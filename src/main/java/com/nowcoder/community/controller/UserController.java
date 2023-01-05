@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 @Controller
@@ -76,12 +78,12 @@ public class UserController implements CommunityConstant {
             model.addAttribute("error", "Incorrect image format.");
             return "/site/settings";
         }
-
-        // generating random file name
-        fileName = CommunityUtil.generateUUID() + suffix;
-        // determining file storage path
-        File dest = new File(uploadPath + "/" + fileName);
         try {
+            Files.createDirectories(Paths.get(uploadPath));
+            // generating random file name
+            fileName = CommunityUtil.generateUUID() + suffix;
+            // determining file storage path
+            File dest = new File(uploadPath + "/" + fileName);
             // saving file
             headerImage.transferTo(dest);
         } catch (IOException e) {

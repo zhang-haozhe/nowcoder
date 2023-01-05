@@ -1,4 +1,4 @@
-const CONTEXT_PATH = '/community';
+const CONTEXT_PATH = '';
 
 window.alert = function (message) {
     if (!$(".alert-box").length) {
